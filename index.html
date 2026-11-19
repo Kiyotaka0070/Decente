@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Para ti | Una exposición privada</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Pantalla de Bienvenida / Welcome Overlay -->
+  <div id="welcomeOverlay">
+    <div class="welcome-card">
+      <span class="vip-tag">PASE PRIVADO · 24 EVIDENCIAS</span>
+      <div class="welcome-duo-frames">
+        <div class="duo-slot">
+          <img src="img/dino1.jpg" alt="" class="welcome-duo-img">
+        </div>
+        <div class="duo-slot">
+          <img src="img/snoopy1.jpg" alt="" class="welcome-duo-img">
+        </div>
+      </div>
+      <p class="eyebrow">EXPOSICIÓN PERSONAL</p>
+      <h1>Lo que tú llamas <em>"decente"</em></h1>
+      <p>Una colección de pruebas para demostrarte que te equivocas al decir decente.</p>
+      <button class="enter-btn" id="enterBtn" type="button">Entrar al museo ✨</button>
+    </div>
+  </div>
+
+  <!-- Fondo cósmico: estrellas, lluvia de meteoritos/cometas y confeti -->
+  <canvas id="spaceCanvas"></canvas>
+  <div id="meteor-rain" aria-hidden="true"></div>
+  <div id="confetti" aria-hidden="true"></div>
+
+  <!-- Barra superior de estado y música -->
+  <header class="top-bar">
+    <div id="stage-pill" class="stage-pill">SALA 01 · ACTO I</div>
+    <button id="musicBtn" class="music-btn" type="button">
+      <span class="note-icon">♪</span> <span id="musicBtnText">Música: OFF</span>
+    </button>
+  </header>
+
+  <!-- VISTA 1: ACTO I (CARRUSEL - 8 FOTOS) -->
+  <section id="view-acto1" class="view">
+    <div class="section-page">
+      <div class="section-header">
+        <span class="eyebrow">ACTO I / III</span>
+        <h2>Sin intentarlo</h2>
+        <p class="section-description">Esas fotos y detalles que enviastes pensando que son normales, sin saber el efecto que causan.</p>
+      </div>
+
+      <div class="carousel-box">
+        <div class="frame-card" id="act1-frame-card">
+          <img id="carousel-img" src="" alt="" class="carousel-photo">
+        </div>
+        <p class="swipe-hint">Desliza o usa los botones para explorar</p>
+        <div class="caption-box">
+          <span id="carousel-counter" class="counter-pill">01 / 08</span>
+          <div id="carousel-dots" class="carousel-dots" aria-hidden="true"></div>
+          <p id="carousel-text" class="art-caption">Cargando...</p>
+        </div>
+        <div class="carousel-controls">
+          <button id="prev-btn" class="ghost-btn" type="button">← Anterior</button>
+          <button id="next-btn" class="ghost-btn" type="button">Siguiente →</button>
+        </div>
+        <div class="page-nav">
+          <button class="ghost-btn" type="button" onclick="openWelcome()">← Portada</button>
+          <button class="primary-btn" type="button" onclick="openMiniGame(1)">Siguiente Reto →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VISTA MINIJUEGO INTERACTIVO -->
+  <section id="view-minigame" class="view hidden">
+    <div class="section-page center-box">
+      <span class="eyebrow">MINIJUEGO RELÁMPAGO</span>
+      <h2 id="mg-title">Prueba de acceso</h2>
+      <p id="mg-instruction" class="section-description"></p>
+
+      <div class="glass-card quiz-box">
+        <div class="question-badge">✦ PREGUNTA DEL RETO</div>
+        <p id="mg-question" class="quiz-question"></p>
+        <div id="mg-options" class="quiz-options"></div>
+        <p id="mg-feedback" class="feedback-text"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- VISTA 2: ACTO II (GALERÍA - 8 FOTOS) -->
+  <section id="view-acto2" class="view hidden">
+    <div class="section-page">
+      <div class="section-header">
+        <span class="eyebrow">ACTO II / III</span>
+        <h2>Detalles que solo yo noto</h2>
+        <p class="section-description">Toca cada foto para leer la nota.</p>
+        <span id="notes-counter" class="counter-pill">Notas leídas: 0 / 8</span>
+      </div>
+
+      <div id="gallery-grid" class="photo-grid"></div>
+
+      <div class="page-nav">
+        <button class="ghost-btn" type="button" onclick="openMiniGame(1)">← Volver</button>
+        <button class="primary-btn" type="button" onclick="openMiniGame(2)">Siguiente Reto →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- VISTA 3: ACTO III (EVIDENCIA FINAL - 4 FOTOS + DUDAS + 1 SECRETA) -->
+  <section id="view-acto3" class="view hidden">
+    <div class="section-page">
+      <div class="section-header">
+        <span class="eyebrow">ACTO III / III</span>
+        <h2>La evidencia final</h2>
+        <p class="section-description">Las que siempre me dejan pensando.</p>
+      </div>
+
+      <div id="final-showcase" class="final-showcase"></div>
+
+      <div class="glass-card verdict-box">
+        <div class="verdict-top-meta">
+          <span class="verdict-stamp">EXPEDIENTE DE EVIDENCIAS</span>
+          <span id="doubt-meter" class="doubt-meter">Nivel de duda: 0%</span>
+        </div>
+
+        <p class="pre-question">Muchas pruebas distintas, y en todas sigues siendo exactamente tú.</p>
+        <h2 class="main-question">¿Aún dudas que seas increíble?</h2>
+
+        <div class="doubt-progress-track" aria-hidden="true">
+          <div id="doubt-progress-fill" class="doubt-progress-fill"></div>
+        </div>
+
+        <div id="doubt-stage" class="doubt-stage hidden">
+          <p id="doubt-message" class="doubt-message"></p>
+          <div id="doubt-media" class="doubt-media hidden">
+            <img id="secret-photo" src="" alt="" class="hidden">
+          </div>
+          <div id="verdict-tags" class="verdict-tags hidden">
+            <span class="verdict-chip">✦ Autenticidad comprobada</span>
+            <span class="verdict-chip">✦ Exceso de humildad</span>
+            <span class="verdict-chip">✦ Luz propia</span>
+          </div>
+        </div>
+
+        <div id="reaction-row" class="reaction-row hidden">
+          <button type="button" class="reaction-btn" onclick="chooseVerdictReaction('convencida')">Ok, me convenciste un poco ✨</button>
+          <button type="button" class="reaction-btn" onclick="chooseVerdictReaction('terca')">Sigo haciéndome la difícil 😏</button>
+        </div>
+        <p id="reaction-reply" class="reaction-reply hidden"></p>
+
+        <div class="verdict-buttons" id="verdict-buttons">
+          <button id="doubt-btn" class="primary-btn full-width" type="button">Quiero ver más pruebas...</button>
+        </div>
+      </div>
+
+      <div class="page-nav">
+        <button class="ghost-btn" type="button" onclick="openMiniGame(2)">← Volver</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- VISTA 4: JARDÍN DE FLORES (3 FOTOS) -->
+  <section id="view-jardin" class="view hidden">
+    <div class="section-page garden-section">
+      <div class="glass-card garden-card">
+        <div class="garden-pot">
+          <button class="plant-card" type="button" onclick="openPlantPhoto(0)">
+            <span class="plant-icon">🌼</span>
+            <span class="plant-name">Margarita</span>
+          </button>
+          <button class="plant-card" type="button" onclick="openPlantPhoto(1)">
+            <span class="plant-icon">🌹</span>
+            <span class="plant-name">Rosa Silvestre</span>
+          </button>
+          <button class="plant-card" type="button" onclick="openPlantPhoto(2)">
+            <span class="plant-icon">🌸</span>
+            <span class="plant-name">Cerezo en Flor</span>
+          </button>
+        </div>
+
+        <div id="plant-reveal-box" class="plant-reveal-box hidden">
+          <span id="plant-reveal-tag" class="plant-tag">✦ RECUERDO FLORECIDO</span>
+          <img id="plant-reveal-img" src="" alt="">
+          <p id="plant-reveal-text"></p>
+        </div>
+      </div>
+
+      <div class="page-nav">
+        <button class="ghost-btn" type="button" onclick="goToView('view-acto3')">← Volver</button>
+        <button class="primary-btn" type="button" onclick="openMiniGame(3)">Reto Final antes de la Carta →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- VISTA EXTRA: TEST DE COMPLICIDAD -->
+  <section id="view-quiz" class="view hidden">
+    <div class="section-page center-box">
+      <span class="eyebrow">TEST DE COMPLICIDAD</span>
+      <h2>A ver si prestas atención</h2>
+      <div class="glass-card quiz-box">
+        <div id="quiz-progress" class="question-badge">PREGUNTA 1 / 2</div>
+        <p id="quiz-question" class="quiz-question">Cargando pregunta...</p>
+        <div id="quiz-options" class="quiz-options"></div>
+      </div>
+      <div class="page-nav">
+        <button class="ghost-btn" type="button" onclick="openMiniGame(3)">← Volver</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- VISTA 5: LA CARTA FINAL -->
+  <section id="view-carta" class="view hidden">
+    <div class="section-page center-box">
+      <div class="glass-card letter-card">
+        <div class="closing-dino">
+          <img src="img/dino2.jpg" alt="" class="dino-cierre-img">
+        </div>
+        <span class="eyebrow">NOTA FINAL</span>
+        <h2>Para Jazmín</h2>
+        <div class="letter-divider">✦ · ♡ · ✦</div>
+        <p>
+          Hice esto porque a veces siento que no te ves como yo te veo. Para ti es "solo una foto más" o "sali decente", pero para mí te ves bien bonita.
+        </p>
+        <p>
+          Me encanta hablar contigo, tu risa, tu forma de ser(si lo dije) y esa naturalidad con la que iluminas mi día.
+        </p>
+        <p class="letter-signature">Guarda este enlace para cuando necesites recordar lo mucho que vales.</p>
+      </div>
+
+      <div class="page-nav">
+        <button class="ghost-btn" type="button" onclick="goToView('view-quiz')">← Volver al Test</button>
+        <button class="ghost-btn" type="button" onclick="goToView('view-jardin')">🌸 Ver el Jardín</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODAL PARA FOTOS -->
+  <div class="modal hidden" id="photo-modal">
+    <div class="modal-backdrop" id="modal-backdrop"></div>
+    <section class="modal-box" role="dialog" aria-modal="true">
+      <button class="close-modal" id="close-modal" type="button" aria-label="Cerrar">×</button>
+      <img id="modal-img" src="" alt="">
+      <div class="letter-divider">✦ · ♡ · ✦</div>
+      <p id="modal-caption"></p>
+    </section>
+  </div>
+
+  <!-- AUDIOS -->
+  <audio id="bg-music" loop preload="auto">
+    <source src="musica-fondo.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="final-music" preload="auto">
+    <source src="musica-final.mp3" type="audio/mpeg">
+  </audio>
+
+  <script src="script.js"></script>
+</body>
+</html>
